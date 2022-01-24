@@ -26,6 +26,7 @@ public class SudokuSolver {
 
         return true;
     }
+
     public static boolean solveSudoku(char[][] board, int n) {
         int row = -1; int col = -1;
         boolean isEmpty = true;

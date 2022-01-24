@@ -1,7 +1,5 @@
 package com.playground;
 
-import com.leetcodecards.recursion1.TreeNode;
-
 import java.util.*;
 
 public class TryOut1 {
@@ -34,10 +32,12 @@ public class TryOut1 {
         Integer b = 5;
         System.out.println(a.equals(b));
         System.out.println(a.equals(b));
-        ArrayDeque<TreeNode> deque = new ArrayDeque<>();
+        //ArrayDeque<TreeNode> deque = new ArrayDeque<>();
         HashMap<Integer, Integer> m = new HashMap<>();
         m.put(new Integer(0), 1);
         m.put(new Integer(0), 1);
         System.out.println();
+
+        TreeSet<Integer> s = new TreeSet<>();
     }
 }

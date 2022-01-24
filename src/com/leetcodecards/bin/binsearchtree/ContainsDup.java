@@ -1,7 +1,5 @@
 package com.leetcodecards.bin.binsearchtree;
 
-import java.util.*;
-
 public class ContainsDup {
 
     public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {

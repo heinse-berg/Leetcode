@@ -2,8 +2,6 @@ package com.leetcodecards.bin.binsearchtree;
 
 import com.leetcodecards.recursion1.TreeNode;
 
-import java.util.*;
-
 public class Validity {
     TreeNode prev;
 
