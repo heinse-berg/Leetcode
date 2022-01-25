@@ -2,9 +2,9 @@ package com.leetcodecards.graph.disjoint.set;
 
 // UnionFind.class
 public class UnionFind {
-    private final int[] root;
+    private int[] root;
     // Use a rank array to record the height of each vertex, i.e., the "rank" of each vertex.
-    private final int[] rank;
+    private int[] rank;
 
     public UnionFind(int size) {
         root = new int[size];

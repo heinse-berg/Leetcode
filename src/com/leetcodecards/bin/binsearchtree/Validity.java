@@ -17,6 +17,18 @@ public class Validity {
         return left && right;
     }
 
+    public boolean helper(TreeNode node, TreeNode left, TreeNode right) {
+        if(node == null)
+            return true;
+        if((left != null && node.val > left.val) || (right != null && node.val < right.val))
+            return false;
+        return helper(node.left, left, node) && helper(node.right, node, right);
+    }
+
+    public boolean isValid(TreeNode node) {
+        return helper(node, null, null);
+    }
+
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
 
         TreeNode successor = null;
