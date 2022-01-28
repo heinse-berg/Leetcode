@@ -4,7 +4,7 @@ import java.util.*;
 
 public class AllPathsDestination {
     HashMap<Integer, HashSet<Integer>> map;
-    boolean[] seen; boolean ans;
+    boolean[] seen;
     int destination;
 
     public boolean dfs(int from) {
