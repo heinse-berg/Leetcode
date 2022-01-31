@@ -13,7 +13,7 @@ public class NetworkDelay {
         int[] distance = new int[n+1];
         int i, max = Integer.MIN_VALUE;
 
-        for(i = 0; i < n+1; i++) {
+        for(i = 1; i < n+1; i++) {
             distance[i] = Integer.MAX_VALUE;
         }
 
