@@ -8,22 +8,23 @@ public class AllPathsDestination {
     int destination;
 
     public boolean dfs(int from) {
+        if(from == destination)
+            return map.get(destination) == null;
+
+        if(seen[from])
+            return false;
+
         seen[from] = true;
-        if(from == destination && map.get(destination) == null) {
-            seen[from] = false;
-            return true;
-        }
         HashSet<Integer> destinations = map.get(from);
         if(destinations == null)
             return false;
-        int count = 0;
+
         for (Integer integer : destinations) {
-            if(!seen[integer])
-                if(dfs(integer))
-                    count++;
+            if(!dfs(integer))
+                return false;
             seen[integer] = false;
         }
-        return count == destinations.size();
+        return true;
     }
 
     public boolean leadsToDestination(int n, int[][] edges, int source, int destination) {

@@ -89,14 +89,14 @@ public class TreeNode {
         return root;
     }
 
-    /*@Override
+    @Override
     public String toString() {
         Traversals traversals = new Traversals();
         StringBuilder s =  new StringBuilder("PreOrder Traversal is \n") .append(traversals.preorderTraversal(this));
         s.append("\nPostorder Traversal is\n").append(traversals.postorderTraversal(this));
         s.append("\nInorder Traversal is\n").append(traversals.inorderIterative(this));
         return s.toString();
-    }*/
+    }
 
     @Override
     public boolean equals(Object tree) {

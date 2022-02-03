@@ -4,7 +4,7 @@ import javafx.util.Pair;
 
 import java.util.*;
 
-public class GFG {
+public class DijkstraMatrix {
 
     int[][] graph;
     int[] distance;
@@ -72,7 +72,7 @@ public class GFG {
     }
 
     public static void main(String[] args) {
-        GFG abc = new GFG();
+        DijkstraMatrix abc = new DijkstraMatrix();
 
         int[][] graph = new int[][] {
                 { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
