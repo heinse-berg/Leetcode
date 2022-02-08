@@ -23,7 +23,7 @@ public class TryOut1 {
         //System.out.println(pq);
         //System.out.println(pq);
 
-        HashSet<Integer> set = new HashSet<>();
+        /*HashSet<Integer> set = new HashSet<>();
         Iterator<Integer> iterator = set.iterator();
         iterator.hasNext();HashMap<Character, Integer> map = new HashMap<>();
         map.merge('c', 1, Integer::sum);
@@ -36,7 +36,8 @@ public class TryOut1 {
         HashMap<Integer, Integer> m = new HashMap<>();
         m.put(new Integer(0), 1);
         m.put(new Integer(0), 1);
-        System.out.println();
+        System.out.println();*/
+        System.out.println((-7%5));
 
         TreeSet<Integer> s = new TreeSet<>();
     }

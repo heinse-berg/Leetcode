@@ -16,7 +16,7 @@ public class ClosestElementToX {
             rightDiff = array[mid+1]-x;
             if(leftDiff <= 0 && rightDiff >= 0)
                 return Math.abs(leftDiff) < rightDiff ? array[mid] : array[mid+1];
-            else if(leftDiff < 0 && rightDiff < 0) {
+            else if(leftDiff < 0) {
                 low = mid+1;
             }
             else {
