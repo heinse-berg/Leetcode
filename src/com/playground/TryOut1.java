@@ -40,5 +40,7 @@ public class TryOut1 {
         System.out.println((-7%5));
 
         TreeSet<Integer> s = new TreeSet<>();
+        LinkedList<Integer> l = new LinkedList<>();
+        Integer[] a = l.toArray(new Integer[l.size()]);
     }
 }

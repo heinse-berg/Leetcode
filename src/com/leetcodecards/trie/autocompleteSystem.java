@@ -6,53 +6,79 @@ import java.util.*;
 
 public class autocompleteSystem {
 
-    /*class TrieNode {
+    static class TrieNode {
         HashMap<Character, TrieNode> map = new HashMap<>();
+        HashMap<String, Integer> pq = new HashMap<>();
     }
 
-    TrieNode root;*/
-    StringBuilder letters;
-    HashMap<String, Integer> map = new HashMap<>();
+    TrieNode root;
+    StringBuilder current = new StringBuilder();
 
     public autocompleteSystem(String[] sentences, int[] times) {
-        //root = new TrieNode();
-        letters = new StringBuilder();
-        for(int i = 0; i < sentences.length; i++) {
-            map.put(sentences[i], times[i]);
+        root = new TrieNode();
+
+        for(int i = 0; i < sentences.length ; i++) {
+            TrieNode curr = root;
+
+            for(char c : sentences[i].toCharArray()) {
+                if(!curr.map.containsKey(c)) {
+                    curr.map.put(c, new TrieNode());
+                }
+                curr.pq.put(sentences[i], curr.pq.getOrDefault(sentences[i], 0) + times[i]);
+                curr = curr.map.get(c);
+            }
+            curr.pq.put(sentences[i], curr.pq.getOrDefault(sentences[i], 0) + times[i]);
         }
+
     }
 
     public List<String> input(char c) {
-        if(c == '#') {
-            map.put(letters.toString(), map.getOrDefault(letters.toString(), 0) + 1);
-            letters = new StringBuilder();
-            return new ArrayList<>();
-        }
-
-        LinkedList<Pair<String, Integer>> pq = new LinkedList<>();
-          Comparator<Pair<String, Integer>> co = ( (a,b) -> a.getValue() == b.getValue() ? a.getKey().compareTo(b.getKey()) : b.getValue() - a.getValue() );
-
-        String s = letters.append(c).toString();
         List<String> res = new LinkedList<>();
-        for(Map.Entry<String, Integer> entry : map.entrySet()) {
-            String key = entry.getKey();
-            int value = entry.getValue();
-            if(key.startsWith(s)) {
-                pq.add(new Pair<>(key, value));
+
+        if(c == '#') {
+            TrieNode curr = root;
+            String s = current.toString();
+
+            for(char ch : s.toCharArray()) {
+                if(!curr.map.containsKey(ch)) {
+                    curr.map.put(ch, new TrieNode());
+                }
+                curr.pq.put(s, curr.pq.getOrDefault(s, 0) + 1);
+                curr = curr.map.get(ch);
             }
+            curr.pq.put(s, curr.pq.getOrDefault(s, 0) + 1);
+            current = new StringBuilder();
+            return res;
         }
-        pq.sort(co);
-        int i = 0;
-        while(i < Math.min(pq.size(), 3)) {
-            res.add(pq.get(i).getKey());
-            i++;
+
+
+        PriorityQueue<Pair<String, Integer>> pq = new PriorityQueue<>((a, b) ->
+                a.getValue().equals(b.getValue()) ? a.getKey().compareTo(b.getKey()) : b.getValue() - a.getValue());
+
+        TrieNode curr = root;
+        current.append(c);
+
+        for(char ch : current.toString().toCharArray()) {
+            if(!curr.map.containsKey(ch))
+                return res;
+            curr = curr.map.get(ch);
         }
+
+        for(Map.Entry<String, Integer> entry : curr.pq.entrySet())
+            pq.add(new Pair<>(entry.getKey(), entry.getValue()));
+
+
+        int sz = pq.size();
+
+        for(int i = 0; i < Math.min(3, sz); i++)
+            res.add(pq.poll().getKey());
+
         return res;
     }
 
     public static void main(String[] args) {
-        autocompleteSystem abc = new autocompleteSystem(new String[] {"i love you", "island", "ironman", "i love leetcode"}, new int[] {5, 3, 2, 2});
-        char[] array = new char[] {'i', ' ', 'a', '#','i',' ', 'a', '#', 'i', ' ', 'a', '#'};
+        autocompleteSystem abc = new autocompleteSystem(new String[] {"abc", "abbc", "a"}, new int[] {3,3,3});
+        char[] array = new char[] {'b', 'c', '#', 'b', 'c', '#'};
         for(char c : array)
             System.out.println(abc.input(c));
     }

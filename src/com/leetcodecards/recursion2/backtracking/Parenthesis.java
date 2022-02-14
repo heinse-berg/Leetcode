@@ -38,10 +38,8 @@ public class Parenthesis {
         while(open < n && close <= open) {
             if(curr.length() == 2 * n)
                 res.add(curr.toString());
-            if(open < n) {
-                open++;
-                curr.append('(');
-            }
+            open++;
+            curr.append('(');
             if(close < open) {
                 close++;
                 curr.append(')');
