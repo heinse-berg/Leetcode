@@ -42,5 +42,10 @@ public class TryOut1 {
         TreeSet<Integer> s = new TreeSet<>();
         LinkedList<Integer> l = new LinkedList<>();
         Integer[] a = l.toArray(new Integer[l.size()]);
+        BitSet bitSet = new BitSet(12);
+        bitSet.set(1);
+        bitSet.flip(7);
+        bitSet.nextSetBit(6);
     }
+
 }

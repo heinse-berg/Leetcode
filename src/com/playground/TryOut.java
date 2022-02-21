@@ -31,17 +31,20 @@ public class TryOut {
 
     public static void main(String[] args) {
         TryOut abc = new TryOut();
-        List<Integer> list = IntStream.of(new int[60]).boxed().collect(Collectors.toList());
+        /*List<Integer> list = IntStream.of(new int[60]).boxed().collect(Collectors.toList());
         list.add(4, 1);
         System.out.println(list);
         abc.removeElement(new int[] {6,4,8,9,10,4,9,8}, 8);
         abc.validMountainArray(new int[] {});
         String a = "abcd";
         StringBuilder s = new StringBuilder(a);
+
         s.append("a");
         String.valueOf(0);
         a.lastIndexOf("a");
         LinkedList<Integer> l = new LinkedList<>();
-        l.removeLast();
+        l.removeLast();*/
+        int b = -8%4;
+        System.out.println();
     }
 }

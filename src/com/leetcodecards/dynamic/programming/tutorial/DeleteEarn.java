@@ -4,24 +4,43 @@ import java.util.*;
 
 public class DeleteEarn {
     public int deleteAndEarn(int[] nums) {
-        Arrays.sort(nums);
-        TreeMap<Integer, Integer> map = new TreeMap<>();
-        for (int num : nums)
-            map.put(num, map.getOrDefault(num, 0)+1);
-        int ans = 0, prev = 0;
-        for (int num : map.keySet()) {
-            if(!map.containsKey(num-1)) {
-                ans += num;
-                prev = num;
-            } else {
+        TreeSet<Integer> set = new TreeSet<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int n = nums.length, i = 2, temp;
 
-            }
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+            set.add(num);
         }
-        return 1;
+
+        int[] dp = new int[set.size()];
+
+        int first = (set.first());
+        set.remove(first);
+        int second = (set.first());
+        set.remove(second);
+
+        dp[0] = first * map.get(first);
+        temp = second * map.get(second);
+        dp[1] = second == first + 1 ? Math.max(dp[0], temp) : dp[0] + temp;
+
+        while(!set.isEmpty()) {
+            int num = set.first();
+            temp = num * map.get(num);
+            if(num == second+1)
+                dp[i] = Math.max(dp[i-1], temp + dp[i-2]);
+            else
+                dp[i] = dp[i-1] + temp;
+            second = num;
+            set.remove(num);
+            i++;
+        }
+
+        return dp[dp.length-1];
     }
 
     public static void main(String[] args) {
         DeleteEarn abc = new DeleteEarn();
-        System.out.println(abc.deleteAndEarn(new int[]{5,5,10,10,11,20,22}));
+        System.out.println(abc.deleteAndEarn(new int[]{2,2,3,3,3,4}));
     }
 }

@@ -7,7 +7,7 @@ public class LowerBound {
     public boolean asteroidsDestroyed(int mass, int[] asteroids) {
         Arrays.sort(asteroids);
         int lower = lowerBound(asteroids, mass), len = asteroids.length - 1;
-        double mas = (double) mass;
+        double mas = mass;
         if(lower == -1) return false;
         for(; lower <= len; lower++) {
             if(mas < asteroids[lower])
