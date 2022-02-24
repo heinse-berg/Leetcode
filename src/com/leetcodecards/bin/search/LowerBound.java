@@ -17,16 +17,20 @@ public class LowerBound {
         return true;
     }
 
-    public int lowerBound(int[] asteroids, int mass) {
-        int low = 0, high = asteroids.length-1, mid;
-        while(low+1 < high) {
+    public int lowerBound(int[] array, int num) {
+        int low = 0, high = array.length-1, mid, ans = -1;
+
+        while(low <= high) {
             mid = low + (high-low)/2;
-            if(asteroids[mid] > mass)
+
+            if(array[mid] >= num) {
+                ans = mid;
                 high = mid - 1;
+            }
             else
-                low = mid;
+                low = mid+1;
         }
-        return asteroids[high] <= mass ? high : asteroids[low] <= mass ? low : -1;
+        return ans;
     }
 
     public static void main(String[] args) {

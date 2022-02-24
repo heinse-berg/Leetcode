@@ -11,6 +11,7 @@ public class Combinations {
     public void combineUtil(int first, LinkedList<Integer> curr) {
         if(curr.size() == k) {
             res.add(new LinkedList<>(curr));
+            return;
         }
 
         for(int i = first; i < n+1; i++) {
