@@ -48,20 +48,19 @@ public class TrekMinEffort {
         cost[0][0] = 0;
 
         while(!pq.isEmpty()) {
-            Cell currentCell = pq.poll();
-            int x = currentCell.x;
-            int y = currentCell.y;
+            Cell curr = pq.poll();
+            visited[curr.x][curr.y] = true;
 
-            if(!visited[x][y]) {
-                for(Cell neighbor : getNeighbors(currentCell)) {
-                    int neighborDiff = Math.abs(heights[x][y] - heights[neighbor.x][neighbor.y]);
-                    if(neighborDiff < neighbor.difference) {
-                        neighbor.difference = neighborDiff;
-                        cost[neighbor.x][neighbor.y] = neighborDiff;
-                        pq.add(new Cell(neighbor.x, neighbor.y, neighborDiff));
+            for(Cell cell : getNeighbors(curr)) {
+                int x = cell.x, y = cell.y;
+                if(!visited[x][y]) {
+                    int diff = Math.max(curr.difference, Math.abs(heights[curr.x][curr.y] - heights[x][y]));
+                    if(cell.difference > diff) {
+                        cost[x][y] = diff;
+                        cell.difference = diff;
+                        pq.add(cell);
                     }
                 }
-                visited[x][y] = true;
             }
         }
 

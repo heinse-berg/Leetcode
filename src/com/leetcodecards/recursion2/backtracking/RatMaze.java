@@ -9,7 +9,7 @@ public class RatMaze {
 
     /* A utility function to print
     solution matrix sol[N][N] */
-    void printSolution(int sol[][])
+    void printSolution(int[][] sol)
     {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++)
@@ -70,7 +70,6 @@ public class RatMaze {
                 return true;
 
             sol[x][y] = 0;
-            return false;
         }
 
         return false;
@@ -83,7 +82,7 @@ public class RatMaze {
                 { 1, 1, 1, 0 },
                 { 0, 1, 0, 1 },
                 { 0, 1, 0, 1 },
-                { 1, 1, 0, 1 } };
+                { 1, 1, 1, 1 } };
 
         N = maze.length;
         rat.solveMaze(maze);

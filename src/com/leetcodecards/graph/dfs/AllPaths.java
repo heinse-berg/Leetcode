@@ -4,38 +4,49 @@ import java.util.*;
 
 public class AllPaths {
 
-    ArrayList<ArrayList<Integer>> adjacencyList;
-    List<List<Integer>> res = new ArrayList<>();
-    int destination;
+    ArrayList<LinkedList<Integer>> g;
+    boolean[] seen;
+    LinkedList<List<Integer>> res = new LinkedList<>();
 
-    public void dfs(int node, LinkedList<Integer> list) {
-        list.add(node);
-        if(node == destination) {
-            res.add(new ArrayList<>(list));
+    public void dfs(int source, LinkedList<Integer> curr, int destination) {
+        if(source == destination) {
+            res.add(new ArrayList<>(curr));
             return;
         }
-        for(int i : adjacencyList.get(node)) {
-            dfs(i, list);
-            list.removeLast();
+        seen[source] = true;
+
+        for(int neigh : g.get(source)) {
+            if(!seen[neigh]) {
+                curr.addLast(neigh);
+                dfs(neigh, curr, destination);
+                curr.removeLast();
+            }
         }
+
+        seen[source] = false;
     }
 
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-        adjacencyList = new ArrayList<>();
-        int n = graph.length, i; this.destination = n-1;
+        int i, n = graph.length;
+        g = new ArrayList<>(n);
+        seen = new boolean[n];
 
         for(i = 0; i < n; i++)
-            adjacencyList.add(new ArrayList<>());
+            g.add(new LinkedList<>());
 
         i = 0;
         for(int[] edge : graph) {
-            ArrayList<Integer> l = adjacencyList.get(i++);
-            for(int j : edge)
-                l.add(j);
+            for(int j : edge) {
+                g.get(i).add(j);
+                g.get(j).add(i);
+            }
+            i++;
         }
 
-        dfs(0, new LinkedList<>());
+        dfs(0, new LinkedList<>(Collections.singletonList(0)), n-1);
+
         return res;
+
     }
 
     public static void main(String[] args) {

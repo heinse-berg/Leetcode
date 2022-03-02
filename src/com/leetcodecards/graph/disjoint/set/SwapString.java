@@ -1,5 +1,7 @@
 package com.leetcodecards.graph.disjoint.set;
 
+import javafx.util.Pair;
+
 import java.util.*;
 
 public class SwapString {
@@ -37,38 +39,36 @@ public class SwapString {
     }
 
     public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
-        int len = s.length(), i, r;
-        HashMap<Integer, List<PriorityQueue>> map = new HashMap<>();
+        int i, len = s.length();
         char c;
+        HashMap<Integer, Pair<PriorityQueue<Character>, PriorityQueue<Integer>>> map = new HashMap<>();
 
         init(len);
         for(i = 0; i < pairs.size(); i++)
             connectNodes((pairs.get(i).get(0)), (pairs.get(i).get(1)));
 
         for(i = 0; i < len; i++) {
+            int root = findRoot(i);
             c = s.charAt(i);
-            r = findRoot(i);
-            if(!map.containsKey(r)) {
-                PriorityQueue<Character> chars = new PriorityQueue<>();
-                PriorityQueue<Character> indices = new PriorityQueue<>();
-                List<PriorityQueue> list = new ArrayList<>();
-                list.add(chars);
-                list.add(indices);
-                map.put(r, list);
-            }
-            List<PriorityQueue> list = map.get(r);
-            list.get(0).add(c);
-            list.get(1).add(i);
+
+            if(!map.containsKey(root))
+                map.put(root, new Pair<>(new PriorityQueue<>(), new PriorityQueue<>()));
+            map.get(root).getKey().add(c);
+            map.get(root).getValue().add(i);
         }
 
         StringBuilder sb = new StringBuilder(s);
 
-        for(List<PriorityQueue> list : map.values()) {
-            PriorityQueue<Character> chars = list.get(0);
-            PriorityQueue<Integer> indices = list.get(1);
-            while(!chars.isEmpty())
-                sb.setCharAt(indices.poll(), chars.poll());
+        for(Pair<PriorityQueue<Character>, PriorityQueue<Integer>> pair : map.values()) {
+            if(pair.getValue().size() > 1) {
+                PriorityQueue<Character> ic = pair.getKey();
+                PriorityQueue<Integer> ii = pair.getValue();
+
+                while(!ic.isEmpty())
+                    sb.setCharAt(ii.poll(), ic.poll());
+            }
         }
+
         return sb.toString();
     }
 

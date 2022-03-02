@@ -3,43 +3,42 @@ package com.leetcodecards.graph.dfs;
 import java.util.*;
 
 public class AllPathsDestination {
-    HashMap<Integer, HashSet<Integer>> map;
+
+    ArrayList<LinkedList<Integer>> graph;
     boolean[] seen;
-    int destination;
 
-    public boolean dfs(int from) {
-        if(from == destination)
-            return map.get(destination) == null;
+    public boolean dfs(int source, int destination) {
+        if(source == destination)
+            return true;
 
-        if(seen[from])
+        if(graph.get(source).isEmpty())
             return false;
 
-        seen[from] = true;
-        HashSet<Integer> destinations = map.get(from);
-        if(destinations == null)
-            return false;
+        seen[source] = true;
 
-        for (Integer integer : destinations) {
-            if(!dfs(integer))
+        for(int neigh : graph.get(source)) {
+            if(seen[neigh])
                 return false;
-            seen[integer] = false;
+
+            if(!dfs(neigh, destination))
+                return false;
         }
+
+        seen[source] = false;
         return true;
     }
 
     public boolean leadsToDestination(int n, int[][] edges, int source, int destination) {
-        this.destination = destination;
-        map = new HashMap<>();
+        int i;
+        seen = new boolean[n];
 
-        for(int[] edge : edges) {
-            int x = edge[0];
-            int y = edge[1];
-            if(!map.containsKey(x))
-                map.put(x, new HashSet<>());
-            map.get(x).add(y);
-        }
-        this.seen = new boolean[n];
-        return dfs(source);
+        for(i = 0; i < n; i++)
+            graph.add(new LinkedList<>());
+
+        for(int[] edge : edges)
+            graph.get(edge[0]).addLast(edge[1]);
+
+        return graph.get(destination).isEmpty() && dfs(0, n - 1);
     }
 
 

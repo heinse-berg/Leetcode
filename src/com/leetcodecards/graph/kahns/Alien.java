@@ -15,54 +15,56 @@ public class Alien{
 
     public String alienOrder(String[] words) {
 
-        int i, j;
-        HashMap<Character, HashSet<Character>> outDegree = new HashMap<>();
+        int i, j, n = words.length;
+        HashMap<Character, HashSet<Character>> graph = new HashMap<>();
         HashMap<Character, Integer> inDegree = new HashMap<>();
-        ArrayDeque<Character> queue = new ArrayDeque<>();
         StringBuilder res = new StringBuilder();
+        ArrayDeque<Character> deque = new ArrayDeque<>();
 
         for(String word : words) {
             for(char c : word.toCharArray()) {
-                inDegree.put(c, 0);
-                outDegree.put(c, new HashSet<>());
+                if(!graph.containsKey(c)) {
+                    graph.put(c, new HashSet<>());
+                    inDegree.put(c, 0);
+                }
             }
         }
 
-        for (i = 0; i < words.length - 1; i++) {
-            String word1 = words[i];
-            String word2 = words[i + 1];
-            if (word1.length() > word2.length() && word1.startsWith(word2))
+        for(i = 0; i < n-1; i++) {
+            String word1 = words[i]; int n1 = word1.length();
+            String word2 = words[i+1]; int n2= word2.length();
+
+            if(n1 > n2 && word1.startsWith(word2))
                 return "";
-            for (j = 0; j < Math.min(word1.length(), word2.length()); j++) {
-                if (word1.charAt(j) != word2.charAt(j)) {
-                    char prev = word1.charAt(j);
-                    char next = word2.charAt(j);
-                    if(!outDegree.get(prev).contains(next)) {
-                        outDegree.get(prev).add(next);
-                        inDegree.put(next, inDegree.get(next) + 1);
+
+            for(j = 0; j < Math.min(n1, n2); j++) {
+                char c1 = word1.charAt(j), c2 = word2.charAt(j);
+                if(c1 != c2) {
+                    if(!graph.get(c1).contains(c2)) {
+                        graph.get(c1).add(c2);
+                        inDegree.put(c2, inDegree.get(c2) + 1);
                     }
                     break;
                 }
             }
         }
 
-        for (Map.Entry<Character, Integer> entry : inDegree.entrySet()) {
-            if (entry.getValue() == 0) {
-                queue.addLast(entry.getKey());
-            }
+        for(char c : inDegree.keySet()) {
+            if(inDegree.get(c).equals(0))
+                deque.addLast(c);
         }
 
-        while (!queue.isEmpty()) {
-            char c = queue.pollFirst();
+        while(!deque.isEmpty()) {
+            char c = deque.pollFirst();
             res.append(c);
-            for (char ch : outDegree.get(c)) {
-                inDegree.put(ch, inDegree.get(ch) - 1);
-                if(inDegree.get(ch) == 0)
-                    queue.addLast(ch);
+            for(char child : graph.get(c)) {
+                inDegree.put(child, inDegree.get(child)-1);
+                if(inDegree.get(child).equals(0))
+                    deque.addLast(child);
             }
         }
 
-        return res.length() == inDegree.size() ? res.toString() : "";
+        return res.length() == inDegree.size() ? "" : res.toString();
     }
 
     public static void main(String[] args) {

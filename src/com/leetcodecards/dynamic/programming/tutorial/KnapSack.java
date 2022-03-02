@@ -1,63 +1,70 @@
 package com.leetcodecards.dynamic.programming.tutorial;
 
-import java.util.*;
-
-import static java.lang.Math.max;
+import java.util.Arrays;
 
 public class KnapSack {
-    int[] weights;
-    int[] values;
-    int capacity;
-    int[][] dp;
+    int[] weights, values;
+    int capacity, n;
+    int[][] memo;
 
-    public int memo(int n, int c) {
-        int val;
-        if(n == 0 || c == 0)
+    /*public int dp(int i, int currWeight) {
+        if(i == 0 || currWeight < 0)
             return 0;
-        else if(dp[n][c] != 0)
-            return dp[n][c];
-        else if(weights[n] > c)
-            val = memo(n - 1, c);
-        else
-            val = max(memo(n - 1, c), values[n] + memo(n - 1, c - weights[n]));
-        dp[n][c] = val;
-        return dp[n][c];
-    }
 
-    public int knap(int[] weights, int[] values, int capacity) {
-        this.weights = weights;
-        this.values = values;
-        this.capacity = capacity;
-        this.dp = new int[weights.length+1][capacity+1];
-        return memo(4, 10);
-    }
+        if(memo[i][currWeight] != -1)
+            return memo[i][currWeight];
 
-    static int knapSack(int W, int wt[], int val[], int n) {
-        int i, w;
-        int K[][] = new int[n + 1][W + 1];
+        int take = -1;
+        if(currWeight - weights[i] >= 0)
+            take = dp(i-1, currWeight - weights[i]) + values[i];
 
-        // Build table K[][] in bottom up manner
-        for (i = 0; i <= n; i++)
-        {
-            for (w = 0; w <= W; w++)
-            {
-                if (i == 0 || w == 0)
-                    K[i][w] = 0;
-                else if (wt[i - 1] <= w)
-                    K[i][w]
-                            = max(val[i - 1] + K[i - 1][w - wt[i - 1]],
-                                  K[i - 1][w]);
-                else
-                    K[i][w] = K[i - 1][w];
+        int dont = dp(i-1, currWeight);
+
+        return memo[i][currWeight] = Math.max(take, dont);
+    }*/
+
+    /*public int knap(int[] w, int[] v, int c) {
+        weights = w;
+        values = v;
+        capacity = c; n = weights.length;
+        memo = new int[n][capacity+1];
+
+        for(int[] arr : memo)
+            Arrays.fill(arr, -1);
+
+        return dp(n-1, capacity);
+    }*/
+
+    public int bottomUp(int[] w, int[] v, int c) {
+        weights = w; values = v; capacity = c; n = weights.length;
+        memo = new int[n][capacity+1];
+
+        for(int i = 1; i <= capacity ; i++)
+            if(i - weights[0] >= 0)
+                memo[0][i] = values[0];
+
+        for(int i = 1; i < n; i++) {
+            for(int j = 1; j <= capacity; j++) {
+                int take = -1;
+                if(j - weights[i] >= 0) {
+                    take = memo[i - 1][j - weights[i]] + values[i];
+                }
+                int dont = memo[i-1][j];
+                memo[i][j] = Math.max(memo[i][j], Math.max(take, dont));
             }
         }
 
-        return K[n][W];
-    }
+        return memo[n-1][capacity];
 
+    }
 
     public static void main(String[] args) {
         KnapSack abc = new KnapSack();
-        System.out.println(abc.knap(new int[]{5,2,4,1,3}, new int[] {5,3,6,4,2}, 10));
+
+        //System.out.println(abc.knap(new int[]{5,6,7,8,9,19,10}, new int[] {1,2,3,4,5,100,7}, 20));
+        System.out.println(abc.bottomUp(new int[]{5,6,7,8,9,19,10}, new int[] {1,2,3,4,5,100,7}, 20));
+
+        for(int[] arr : abc.memo)
+            System.out.println(Arrays.toString(arr));
     }
 }
