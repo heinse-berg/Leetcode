@@ -5,25 +5,18 @@ import java.util.*;
 public class ClosesToX {
 
     public int binSearch(int[] array, int x) {
-        int low = 0, high  = array.length-1, mid, leftDiff, rightDiff;
-        if(x <= array[low])
-            return low;
-        else if(x >= array[high])
-            return high;
+        int low = 0, high  = array.length-1, mid, ans = -1;
         while(low <= high) {
             mid = low + (high-low)/2;
-            leftDiff = array[mid]-x;
-            rightDiff = array[mid+1]-x;
-            if(leftDiff <= 0 && rightDiff >= 0)
-                return Math.abs(leftDiff) <= rightDiff ? mid : mid+1;
-            else if(leftDiff < 0) {
-                low = mid+1;
-            }
-            else {
+            ans = array[mid];
+            if(ans == x)
+                return ans;
+            else if(ans > x)
                 high = mid-1;
-            }
+            else
+                low = mid+1;
         }
-        return -1;
+        return ans;
     }
 
     public List<Integer> findClosestElements(int[] arr, int k, int x) {
