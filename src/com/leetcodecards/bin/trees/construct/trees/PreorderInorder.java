@@ -3,40 +3,35 @@ package com.leetcodecards.bin.trees.construct.trees;
 import com.leetcodecards.recursion1.TreeNode;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PreorderInorder {
+    int n;
     HashMap<Integer, Integer> map = new HashMap<>();
-    int preIndex;
-    int[] inorder, preorder;
 
-    public TreeNode build(int leftIndex, int rightIndex) {
-        if(leftIndex > rightIndex)
+    public TreeNode buildTree(int left, int right, int[] inorder, int[] preorder, AtomicInteger preorderIndex) {
+
+        if(left > right)
             return null;
 
-        int rootElement = preorder[preIndex];
-        TreeNode root = new TreeNode(rootElement);
-        int index = map.get(rootElement);
-        preIndex++;
+        int val = preorder[preorderIndex.getAndIncrement()];
+        TreeNode root = new TreeNode(val);
+        int index = map.get(val);
 
-        root.left = build(leftIndex, index-1);
-        root.right = build(index+1, rightIndex);
+        root.left = buildTree(left, index-1, inorder, preorder, preorderIndex);
+        root.right = buildTree(index+1, right, inorder, preorder, preorderIndex);
 
         return root;
     }
 
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-        if(inorder == null) return null;
-        if(inorder.length == 1) return new TreeNode(inorder[0]);
+    public TreeNode buildTree(int[] inorder, int[] preorder) {
 
-        int i = 0, len = inorder.length;
-        this.inorder = inorder;
-        this.preorder = preorder;
+        n = inorder.length;
 
-        for(int num : inorder)
-            map.put(num, i++);
+        for(int i = 0; i < n; i++)
+            map.put(inorder[i], i);
 
-        preIndex = 0;
-        return build(0, len-1);
+        return buildTree(0, n-1, inorder, preorder, new AtomicInteger(0));
     }
 
     public static void main(String[] args) {

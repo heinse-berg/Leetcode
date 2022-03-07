@@ -44,7 +44,11 @@ public class TryOut {
         a.lastIndexOf("a");
         LinkedList<Integer> l = new LinkedList<>();
         l.removeLast();*/
-        int b = -8%4;
-        System.out.println();
+        int a = (int) Math.floor(Math.log(20) / Math.log(2));
+        int b = (int) Math.floor(Math.log(28) / Math.log(2));
+        int c = (int) Math.floor(Math.log(10) / Math.log(2));
+        System.out.println(a);
+        System.out.println(b);
+        System.out.println(c);
     }
 }
