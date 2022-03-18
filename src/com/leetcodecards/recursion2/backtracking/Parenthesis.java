@@ -4,53 +4,35 @@ import java.util.*;
 
 public class Parenthesis {
 
-    List<String> res = new ArrayList<>();
-    int n;
-    
-    public List<String> parenthesis(int n) {
-        this.n = n;
-        createList(new StringBuilder(), 0, 0);
-        return res;
-    }
+    LinkedList<String> res = new LinkedList<>();
 
-    public void createList(StringBuilder curr, int open, int close) {
-        if(curr.length() == 2 * n) {
-            res.add(curr.toString());
+    public void backtrack(int n, StringBuilder cur, int open, int close) {
+
+        if(cur.length() == 2 * n) {
+            res.add(cur.toString());
+            return;
         }
 
         if(open < n) {
-            curr.append('(');
-            createList(curr, open+1, close);
-            curr.deleteCharAt(curr.length()-1);
+            cur.append("(");
+            backtrack(n, cur, open + 1, close);
+            cur.deleteCharAt(cur.length() - 1);
         }
-        if(close < open) {
-            curr.append(')');
-            createList(curr, open, close+1);
-            curr.deleteCharAt(curr.length()-1);
+
+        if(open > close) {
+            cur.append(")");
+            backtrack(n, cur, open, close+1);
+            cur.deleteCharAt(cur.length()-1);
         }
+
     }
 
-    public List<String> iterative(int n) {
-        Stack<Character> stack = new Stack<>();
-        int open = 0, close = 0;
-        StringBuilder curr = new StringBuilder();
-
-        while(open < n && close <= open) {
-            if(curr.length() == 2 * n)
-                res.add(curr.toString());
-            open++;
-            curr.append('(');
-            if(close < open) {
-                close++;
-                curr.append(')');
-            }
-        }
-
+    public List<String> generateParenthesis(int n) {
+        backtrack(n, new StringBuilder(), 0, 0);
         return res;
     }
-
     public static void main(String[] args) {
         Parenthesis abc = new Parenthesis();
-        System.out.println(abc.parenthesis(3));
+        System.out.println(abc.generateParenthesis(3));
     }
 }

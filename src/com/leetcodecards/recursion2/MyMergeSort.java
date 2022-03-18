@@ -4,19 +4,19 @@ import java.util.*;
 
 public class MyMergeSort {
 
-    public void merge(int l, int r, int[] arr) {
+    public void mergeSort(int l, int r, int[] arr) {
 
         if(l < r) {
             int mid = l + (r - l) / 2;
-            merge(l, mid, arr);
-            merge(mid + 1, r, arr);
+            mergeSort(l, mid, arr);
+            mergeSort(mid + 1, r, arr);
 
-            combine(l, r, mid, arr);
+            merge(l, r, mid, arr);
         }
 
     }
 
-    public void combine(int l, int r, int mid, int[] arr) {
+    public void merge(int l, int r, int mid, int[] arr) {
         int[] temp = new int[r-l+1];
         int i = l, j = mid+1, k = 0;
 
@@ -36,7 +36,7 @@ public class MyMergeSort {
     }
 
     public void mergeSort(int[] arr) {
-        merge(0, arr.length-1, arr);
+        mergeSort(0, arr.length-1, arr);
     }
 
     public static void main(String[] args) {

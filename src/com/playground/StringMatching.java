@@ -1,7 +1,5 @@
 package com.playground;
 
-import java.util.*;
-
 public class StringMatching {
 
     public int naive(String text, String pat) {
@@ -15,6 +13,34 @@ public class StringMatching {
                 count++;
         }
         return count;
+    }
+
+    public int myAtoi(String s) {
+        s = s.trim();
+        int i = 0, n = s.length(), start = 0;
+        boolean neg = false;
+        if(n == 0)
+            return 0;
+        char c = s.charAt(0);
+        if(c == '-' || c == '+') {
+            if(c == '-')
+                neg = true;
+            i++; start++;
+        }
+
+        while(i < n && Character.isDigit(s.charAt(i)))
+            i++;
+        s = s.substring(start, i);
+        long val = Long.parseLong(s);
+        if(s.length() == 0)
+            return 0;
+        if(neg)
+            val = -val;
+        if(val > Integer.MAX_VALUE)
+            return Integer.MAX_VALUE;
+        if(val < Integer.MIN_VALUE)
+            return Integer.MIN_VALUE;
+        return (int) val;
     }
 
     public static void main(String[] args) {

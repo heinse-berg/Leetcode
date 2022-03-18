@@ -4,18 +4,18 @@ import java.util.*;
 
 public class LongestSubstringkCharcs {
 
-public int lengthOfLongestSubstringKDistinct(String s, int k) {
+    public int lengthOfLongestSubstringKDistinct(String s, int k) {
         int n = s.length(), max = 0, left = 0;
         if(n * k == 0)
             return max;
 
-        HashMap<Character, Integer> map = new HashMap<>();
+        LinkedHashMap<Character, Integer> map = new LinkedHashMap<>();
 
         for(int i = 0; i < n; i++) {
             char ch = s.charAt(i);
             map.put(ch, i);
             if(map.size() == k+1) {
-                int min = Collections.min(map.values());
+                int min = map.entrySet().iterator().next().getValue();
                 map.remove(s.charAt(min));
                 left = min+1;
             }

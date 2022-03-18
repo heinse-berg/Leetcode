@@ -2,13 +2,16 @@ package com.leetcodecards.recursion2.backtracking;
 /* Java program to solve Rat in
 a Maze problem using backtracking */
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class RatMaze {
 
     // Size of the maze
     static int N;
 
-    /* A utility function to print
-    solution matrix sol[N][N] */
+    int[][] directions = new int[][] { {0,1}, {1,0}, {-1,0}, {0,-1} };
+
     void printSolution(int[][] sol)
     {
         for (int i = 0; i < N; i++) {
@@ -19,58 +22,46 @@ public class RatMaze {
         }
     }
 
-    boolean isSafe(
+    List<int[]> getNeighbors(
             int[][] maze, int x, int y)
     {
-        // if (x, y outside maze) return false
-        return (x >= 0 && x < N && y >= 0
-                && y < N && maze[x][y] == 1);
+        LinkedList<int[]> list = new LinkedList<>();
+        for(int[] d : directions) {
+            int newX = d[0] + x, newY = d[1] + y;
+            if(newX >= 0 && newY >= 0 && newX < N && newY < N && maze[newX][newY] == 1)
+                list.addLast(new int[] {newX, newY});
+        }
+        return list;
     }
 
     boolean solveMaze(int[][] maze)
     {
-        int[][] sol = new int[N][N];
 
-        if (!solveMazeUtil(maze, 0, 0, sol)) {
+        if (!solveMazeUtil(maze, 0, 0)) {
             System.out.print("Solution doesn't exist");
             return false;
         }
 
-        printSolution(sol);
+        printSolution(maze);
         return true;
     }
 
-    boolean solveMazeUtil(int[][] maze, int x, int y,
-                          int[][] sol)
+    boolean solveMazeUtil(int[][] maze, int x, int y)
     {
         // if (x, y is goal) return true
         if (x == N - 1 && y == N - 1
                 && maze[x][y] == 1) {
-            sol[x][y] = 1;
+            maze[x][y] = 2;
             return true;
         }
 
-        if (isSafe(maze, x, y)) {
+        maze[x][y] = 2;
 
-            if (sol[x][y] == 1)
-                return false;
-
-            sol[x][y] = 1;
-
-            if (solveMazeUtil(maze, x + 1, y, sol))
+        for(int[] neighbor : getNeighbors(maze, x, y))
+            if(solveMazeUtil(maze, neighbor[0], neighbor[1]))
                 return true;
 
-            if (solveMazeUtil(maze, x, y + 1, sol))
-                return true;
-
-            if (solveMazeUtil(maze, x - 1, y, sol))
-                return true;
-
-            if (solveMazeUtil(maze, x, y - 1, sol))
-                return true;
-
-            sol[x][y] = 0;
-        }
+        maze[x][y] = 1;
 
         return false;
     }

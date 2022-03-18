@@ -6,29 +6,26 @@ import java.util.List;
 
 public class Subsets {
 
-    int n;
-    List<List<Integer>> res = new ArrayList<>();
+    LinkedList<List<Integer>> ans = new LinkedList<>();
     int[] nums;
+    int n;
 
-    public void combineUtil(int first, LinkedList<Integer> curr) {
+    public void backtrack(int index, LinkedList<Integer> curr) {
 
-        res.add(new LinkedList<>(curr));
+        ans.addLast(new ArrayList<>(curr));
 
-        int i;
-        for(i = first; i < n; i++) {
-            curr.add(nums[i]);
-            combineUtil(i+1, curr);
+        for(int i = index; i < n; i++) {
+            curr.addLast(nums[index]);
+            backtrack(index+1, curr);
             curr.removeLast();
         }
 
     }
 
     public List<List<Integer>> subsets(int[] nums) {
-        this.n = nums.length;
-        this.nums = nums;
-        LinkedList<Integer> curr = new LinkedList<>();
-        combineUtil(0, curr);
-        return res;
+        this.nums = nums; this.n = nums.length;
+        backtrack(0, new LinkedList<>());
+        return ans;
     }
 
     LinkedList<List<Character>> substrings = new LinkedList<>();
@@ -53,5 +50,6 @@ public class Subsets {
     public static void main(String[] args) {
         Subsets abc = new Subsets();
         System.out.println(abc.subsets("abc"));
+        System.out.println(abc.subsets(new int[] {0,1,2}));
     }
 }

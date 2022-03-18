@@ -50,13 +50,15 @@ public class TryOut1 {
         TreeMap<Integer, Integer> m = new TreeMap<>();
         LinkedList<Integer> l = new LinkedList<>();
         Integer[] a = l.toArray(new Integer[l.size()]);
-        BitSet bitSet = new BitSet(12);
+        BitSet bitSet = new BitSet();
         bitSet.get(1);
         bitSet.set(1);
+        bitSet.set(100);
         bitSet.clear(0);
         bitSet.flip(7);
         bitSet.nextSetBit(6);
         bitSet.nextClearBit(1);
+        System.out.println();
     }
 
 }

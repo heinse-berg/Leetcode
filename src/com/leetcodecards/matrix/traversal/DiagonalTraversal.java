@@ -1,6 +1,7 @@
 package com.leetcodecards.matrix.traversal;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DiagonalTraversal {
 
@@ -26,6 +27,8 @@ public class DiagonalTraversal {
 
     public static void main(String[] args) {
         DiagonalTraversal abc = new DiagonalTraversal();
+        AtomicInteger a = new AtomicInteger(0);
+        a.intValue();
         System.out.println();
     }
 }
