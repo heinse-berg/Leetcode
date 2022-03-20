@@ -20,7 +20,7 @@ public class PreviousLesserElement {
 
     public static void main(String[] args) {
         PreviousLesserElement abc = new PreviousLesserElement();
-
+        Integer.parseInt("c");
         System.out.println(Arrays.toString(abc.ple(new int[] {10,20,15,17,21,9,4100})));
     }
 }
