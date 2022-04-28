@@ -4,7 +4,7 @@ import java.util.*;
 
 public class LIS {
 
-    int[] nums;
+/*    int[] nums;
     int n;
     Integer[] memo;
 
@@ -31,11 +31,28 @@ public class LIS {
         memo = new Integer[n+1];
 
         return dp(0)+1;
-    }
+    }*/
 
+    public int lengthOfLIS(int[] nums) {
+
+        int n = nums.length, max = 1;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < i; j++) {
+                if(nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                    max = Math.max(max, dp[i]);
+                }
+            }
+        }
+
+        return max;
+    }
 
     public static void main(String[] args) {
         LIS abc = new LIS();
-        System.out.println(abc.lengthOfLIS(new int[] {4,10,4,3,8,9}));
+        System.out.println(abc.lengthOfLIS(new int[] {1,3,6,7,9,4,10,5,6}));
     }
 }

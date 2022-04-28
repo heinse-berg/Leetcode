@@ -7,7 +7,6 @@ import java.util.List;
 
 public class ThreeSortedArrays {
     List<Integer> func(int[] a, int[]b, int[] c) {
-
         int k=0, cl=c.length;
         ArrayList<Integer> result = new ArrayList<>();
         HashSet<Integer> a1 = new HashSet<>(), b1 = new HashSet<>();

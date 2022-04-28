@@ -3,34 +3,36 @@ package com.leetcodecards.dynamic.programming.tutorial;
 import java.util.*;
 
 public class MinCostClimbing {
+    int[] memo;
 
-    public int minCostClimbingStairs(int[] cost) {
-        int length = cost.length, i;
-        int[] dp = new int[length+1];
+    public int dp(int[] cost, int i) {
 
-        for(i = 2; i  <= length; i++) {
-            dp[i] = Math.min(cost[i-1] + dp[i-1], cost[i-2] + dp[i-2]);
-        }
-
-        return dp[length];
-    }
-
-    int[] cost;
-    HashMap<Integer, Integer> memo = new HashMap<>();
-
-    public int dp(int i) {
-        if(i < 2)
+        if(i <= 1)
             return 0;
 
-        if(!memo.containsKey(i))
-            memo.put(i, Math.min(dp(i-1) + cost[i-1], dp(i-2) + cost[i-2]));
+        if(memo[i] != -1)
+            return memo[i];
 
-        return memo.get(i);
+        return memo[i] = Math.min(dp(cost, i-1) + cost[i-1], dp(cost, i-2) + cost[i-2]);
     }
 
     public int minCostClimbingStairsTopDownDP(int[] cost) {
-        this.cost = cost;
-        return dp(cost.length);
+
+        int n = cost.length;
+        memo = new int[n+1];
+        Arrays.fill(memo, -1);
+        return dp(cost, n);
+    }
+
+    public int minCostClimbingStairs(int[] cost) {
+
+        int n = cost.length;
+        int[] dp = new int[n+1];
+
+        for(int i = 2; i <= n; i++)
+            dp[i] = Math.min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2]);
+
+        return dp[n];
     }
 
     public static void main(String[] args) {

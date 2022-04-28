@@ -5,7 +5,7 @@ import java.util.*;
 public class DecodeString {
 
 
-    private int recursiveWithMemo(int index, String str) {
+    /*private int recursiveWithMemo(int index, String str) {
         // Have we already seen this substring?
         if (memo.containsKey(index)) {
             return memo.get(index);
@@ -40,9 +40,9 @@ public class DecodeString {
 
     Map<Integer, Integer> memo = new HashMap<>();
 
-    /*public int numDecodings(String s) {
+    *//*public int numDecodings(String s) {
         return recursiveWithMemo(0, s);
-    }*/
+    }*//*
 
     public int numDecodings(String s) {
         int n = s.length();
@@ -59,10 +59,32 @@ public class DecodeString {
         }
 
         return dp[0];
+    }*/
+
+    public int numDecodings(String s) {
+
+        int n = s.length();
+        int[] dp = new int[n+1];
+        dp[n] = 1;
+        dp[n-1] = s.charAt(n-1) == '0' ? 0 : 1;
+        if(n == 1)
+            return dp[n-1];
+
+        for(int i = n-2; i >= 0; i--) {
+            char c = s.charAt(i);
+            if(c != '0') {
+                dp[i] = dp[i+1];
+                if(Integer.parseInt(s.substring(i, i+2)) <= 26) {
+                    dp[i] += dp[i+2];
+                }
+            }
+        }
+
+        return dp[0];
     }
 
     public static void main(String[] args) {
         DecodeString abc = new DecodeString();
-        System.out.println(abc.numDecodings("2326"));
+        System.out.println(abc.numDecodings("126"));
     }
 }

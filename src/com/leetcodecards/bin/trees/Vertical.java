@@ -1,43 +1,65 @@
 package com.leetcodecards.bin.trees;
 
 import com.leetcodecards.recursion1.TreeNode;
+import javafx.util.Pair;
 
 import java.util.*;
 
 public class Vertical {
 
-    TreeMap<Integer, LinkedList<int[]>> map = new TreeMap<>();
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
 
-    public void helper(TreeNode c, int col, int row) {
-
-        if(!map.containsKey(col))
-            map.put(col, new LinkedList<>());
-        map.get(col).add(new int[] {row, col, c.val});
-
-        if(c.left != null)
-            helper(c.left, col-1, row+1);
-
-        if(c.right != null)
-            helper(c.right, col+1, row+1);
-
-    }
-
-    public List<List<Integer>> verticalOrder(TreeNode root) {
-        ArrayList<List<Integer>> ans = new ArrayList<>();
+        TreeMap<Integer, PriorityQueue<int[]>> res = new TreeMap<>();
+        int row = 0;
+        Comparator<int[]> comparator = ((a, b) -> {
+            if(a[0] == b[0]) {
+                if(a[1] == b[1]) {
+                    return a[2] - b[2];
+                }
+                return a[1] - b[1];
+            }
+            return a[0] - b[0];
+        });
 
         if(root == null)
-            return ans;
-        helper(root, 0, 0);
+            return new ArrayList<>();
 
-        for(LinkedList<int[]> list : map.values()) {
-            ans.add(new LinkedList<>());
-            list.sort((a,b) -> a[0] == b[0] ? a[1] - b[1] : a[0]-b[0] );
-            List<Integer> l = ans.get(ans.size()-1);
-            for(int[] t : list)
-                l.add(t[2]);
+        ArrayDeque<Pair<TreeNode, Integer>> q = new ArrayDeque<>();
+        q.addLast(new Pair<>(root, 0));
+
+        while(!q.isEmpty()) {
+
+            int size = q.size();
+
+            for(int i = 0; i < size; i++) {
+
+                Pair<TreeNode, Integer> pair = q.removeFirst();
+                TreeNode curr = pair.getKey();
+                int col = pair.getValue();
+
+                if(!res.containsKey(col))
+                    res.put(col, new PriorityQueue<>(comparator));
+                res.get(col).add(new int[] { row, col, curr.val });
+
+                if(curr.left != null)
+                    q.addLast(new Pair<>(curr.left, col-1));
+                if(curr.right != null)
+                    q.addLast(new Pair<>(curr.right, col+1));
+            }
+            row++;
         }
 
-        return ans;
+        ArrayList<List<Integer>> list = new ArrayList<>();
+
+        for(PriorityQueue<int[]> pq : res.values()) {
+            ArrayList<Integer> l = new ArrayList<>();
+            while(!pq.isEmpty()) {
+                l.add(pq.poll()[2]);
+            }
+            list.add(l);
+        }
+
+        return list;
 
     }
 
