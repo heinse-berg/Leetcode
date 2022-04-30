@@ -15,8 +15,8 @@ public class Subsets {
         ans.addLast(new ArrayList<>(curr));
 
         for(int i = index; i < n; i++) {
-            curr.addLast(nums[index]);
-            backtrack(index+1, curr);
+            curr.addLast(nums[i]);
+            backtrack(i+1, curr);
             curr.removeLast();
         }
 
