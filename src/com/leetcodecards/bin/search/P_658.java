@@ -4,21 +4,21 @@ import java.util.*;
 
 public class P_658 {
     public List<Integer> findClosestElements(int[] arr, int k, int x) {
-        int low = 0, high = arr.length-1, mid;
-        while(low < high) {
-            mid = low + (high-low)/2;
-            if(Math.abs(x - arr[mid]) <= Math.abs(arr[mid+1]-x)) {
-                high = mid;
-            }
-            else {
-                low = mid+1;
-            }
+        int n = arr.length, left = 0, right = n-k;
+        LinkedList<Integer> res = new LinkedList<>();
+
+        while(left < right) {
+            int mid = left + (right-left)/2;
+            if(x-arr[left] <= arr[right]-x)
+                right = mid-1;
+            else
+                left = mid+1;
         }
-        ArrayList<Integer> result = new ArrayList<>();
-        for(int i = low; i >= 0 && k > 0; i--,k--) result.add(arr[i]);
-        for(int i = low+1; k > 0; i++,k--) result.add(arr[i]);
-        Collections.sort(result);
-        return result;
+
+        while(--k > 0)
+            res.addLast(left++);
+
+        return res;
     }
 
     public static void main(String[] args) {

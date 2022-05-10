@@ -6,33 +6,36 @@ public class FirstMissingPos {
 
     public int firstMissingPositive(int[] nums) {
         int n = nums.length;
+        int[] list = new int[n+1];
+        System.arraycopy(nums, 0, list, 1, n);
         boolean one = false;
-        for(int i = 0; i < n; i++) {
-            if(nums[i] == 1)
-                one = true;
-            if(nums[i] <= 0 || nums[i] >= n) {
-                nums[i] = n+1;
-            }
 
+        for(int i = 1; i < n+1; i++) {
+            if(list[i] <= 0 || list[i] >= n) {
+                list[i] = n+1;
+            }
+            else if(list[i] == 1)
+                one = true;
         }
 
         if(!one)
             return 1;
 
-        for(int i = 0; i < n; i++) {
-            int a = Math.abs(nums[i]);
-            if(a != n+1) {
-                if(nums[a] > 0)
-                    nums[a] = -nums[a];
-            }
+        for(int i = 1; i < n+1; i++) {
+            int index = Math.abs(list[i]);
 
+            if(index < n+1) {
+                if(list[index] > 0)
+                    list[index] = list[index] * -1;
+            }
         }
 
-        for(int i = 1; i < n; i++)
-            if(nums[i] > 0)
+        for(int i = 1; i < n+1; i++) {
+            if(list[i] > 0)
                 return i;
+        }
 
-        return n+1;
+        return 1;
     }
 
     public static void main(String[] args) {

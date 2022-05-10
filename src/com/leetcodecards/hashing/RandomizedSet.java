@@ -29,6 +29,7 @@ public class RandomizedSet {
         list.set(index, list.get(list.size()-1));
         list.remove(list.size()-1);
         map.remove(val);
+        random.nextInt(34);
         return true;
     }
 
