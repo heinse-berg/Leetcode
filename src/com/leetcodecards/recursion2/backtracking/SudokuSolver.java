@@ -1,66 +1,43 @@
 package com.leetcodecards.recursion2.backtracking;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
 public class SudokuSolver {
 
+    ArrayList<HashSet<Character>> rows = new ArrayList<>(), cols = new ArrayList<>(), sub = new ArrayList<>();
+    static final char[] ARRAY = new char[] {'1','2','3','4','5','6','7','8','9'};
+    static final BiFunction<Integer, Integer, Integer> SUB_MATRIX_MAPPER = (a, b) -> (a/3)*3 + b/3;
+    int count = 0;
     char[][] board;
-    boolean solved = false;
+    boolean sudokuSolve = false;
 
-    public boolean isSafe(int i, int j) {
-        char toCheck = board[i][j];
-        board[i][j] = '.';
-
-        //row
-        for(int row = 0; row < 9; row++)
-            if(board[row][j] == toCheck) {
-                board[i][j] = toCheck;
-                return false;
-            }
-
-        //col
-        for(int col = 0; col < 9; col++)
-            if(board[i][col] == toCheck) {
-                board[i][j] = toCheck;
-                return false;
-            }
-
-        //subMatrix
-        int boxRowOffSet = (i/3)*3;
-        int boxColOffSet = (j/3)*3;
-        for(int row=0; row<3; row++) {
-            for (int col = 0; col < 3; col++) {
-                if (board[boxRowOffSet + row][boxColOffSet + col] == toCheck) {
-                    board[i][j] = toCheck;
-                    return false;
-                }
-            }
-        }
-
-        board[i][j] = toCheck;
-        return true;
+    public boolean isSafe(int row, int col, char digit) {
+        return !rows.get(row).contains(digit) && !cols.get(col).contains(digit) && !sub.get(SUB_MATRIX_MAPPER.apply(row, col)).contains(digit);
     }
 
-    public void backtrack(int row, int col) {
 
-        if(row == 8 && col == 9) {
-            solved = true;
+    public void backtrack(char[][] board, int row, int col) {
+
+        if(row == 9) {
+            sudokuSolve = count == 81;
             return;
         }
-        if(!solved) {
-            for (int i = row; i < 9; i++) {
-                if(!solved) {
-                    for (int j = col; j < 9; j++) {
-                        if(!solved) {
-                            if (board[i][j] == '.') {
-                                for (int k = 0; k < 9; k++) {
-                                    board[i][j] = (char) (k + '0');
-                                    if (isSafe(i, j)) {
-                                        backtrack(i, j);
-                                    }
-                                    board[i][j] = '.';
-                                }
-                            }
+
+        for(int i = row; i < 9; i++) {
+            for(int j = col; j < 9; j++) {
+                if(board[i][j] == '.') {
+                    for(char c : ARRAY) {
+                        if(isSafe(i, j, c)) {
+                            board[i][j] = c;
+                            rows.get(i).add(c); cols.get(j).add(c); sub.get(SUB_MATRIX_MAPPER.apply(i, j)).add(c);
+                            count++;
+                            backtrack(board, i, j + 1);
+                            if(sudokuSolve)
+                                return;
+                            board[i][j] = '.';
+                            count--;
+                            rows.get(i).remove(c); cols.get(j).remove(c); sub.get(SUB_MATRIX_MAPPER.apply(i, j)).remove(c);
                         }
                     }
                 }
@@ -69,9 +46,28 @@ public class SudokuSolver {
 
     }
 
+    public void init(char[][] board) {
+
+        for(int i = 0; i < 9; i++) {
+            rows.add(new HashSet<>());
+            cols.add(new HashSet<>());
+            sub.add(new HashSet<>());
+        }
+
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
+                if(board[i][j] != '.') {
+                    rows.get(i).add(board[i][j]); cols.get(j).add(board[i][j]); sub.get(SUB_MATRIX_MAPPER.apply(i, j)).add(board[i][j]);
+                    count++;
+                }
+            }
+        }
+    }
+
     public void solveSudoku(char[][] board) {
         this.board = board;
-        backtrack(0, 0);
+        init(board);
+        backtrack(board, 0, 0);
     }
 
     public static void main(String[] args) {
@@ -89,6 +85,6 @@ public class SudokuSolver {
         Arrays.stream(sudoku).forEach( a -> System.out.println(Arrays.toString(a)));*/
         SudokuSolver s = new SudokuSolver();
         s.solveSudoku(sudoku);
-        System.out.println();
+        System.out.println(Arrays.deepToString(sudoku));
     }
 }

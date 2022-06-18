@@ -53,7 +53,8 @@ public class TreeNode {
     public static TreeNode getSample() {
         TreeNode root = new TreeNode(1);
         root.right = new TreeNode(2);
-        root.right.left = new TreeNode(3);
+        root.right.right = new TreeNode(3);
+        root.right.right.right = new TreeNode(4);
         return root;
     }
 

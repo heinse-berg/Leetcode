@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class InputReaderFileConsole {
 
-    static String pathString = "E:/Coding/resources/sample.txt";
+    static String pathString = "D:/Interview/Miscallenous/sample.txt.txt";
     static Path samplePath = Paths.get(pathString);
 
     private static void readFile() throws Exception {
@@ -36,17 +36,17 @@ public class InputReaderFileConsole {
     private static void readConsoleUtility() {
         Console console = System.console();
         String input;
-        while((input = console.readLine("Enter input")) != null) {
+/*        while((input = console.readLine("Enter input")) != null) {
             System.out.println("You had entered : " + input);
-        }
+        }*/
 
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Pleas eneter");
+        System.out.println("Starting : Please enter");
         while(scanner.hasNextLine()) {
             input = scanner.nextLine();
             System.out.println("You had entered : " + input);
-            System.out.println("Pleas eneterrr");
+            System.out.println("Please enter");
         }
         scanner.close();
     }

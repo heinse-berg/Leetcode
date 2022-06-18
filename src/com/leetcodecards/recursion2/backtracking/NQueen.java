@@ -1,44 +1,59 @@
 package com.leetcodecards.recursion2.backtracking;
 
 import java.util.*;
+import java.util.function.IntFunction;
 
 public class NQueen {
 
-    int[][] board;
+    boolean[] rows, cols, diags, antiDiags;
+    ArrayList<List<String>> res = new ArrayList<>();
     int n;
-    int ans = 0;
-    HashSet<Integer> rows = new HashSet<>();
-    HashSet<Integer> diags = new HashSet<>();
-    HashSet<Integer> antiDiags = new HashSet<>();
+    IntFunction<Integer> antiDiagonals = a -> a < 0 ? Math.abs(a)+n : a;
 
-    public boolean isSafe(int i, int j) {
-        return !rows.contains(i) && !diags.contains(i + j) && !antiDiags.contains(i - j);
+    public boolean isSafe(int row, int col) {
+        return !rows[row] && !cols[col] && !diags[row+col] && !antiDiags[antiDiagonals.apply(row-col)];
     }
 
-    public void backtrack(int col) {
+    public void back(int col, ArrayList<StringBuilder> curr) {
+
         if(col == n) {
-            ans++;
+            res.add((ArrayList<String>) curr.clone());
+            return;
         }
 
-        for(int row = 0; row < n; row++) {
-            if (isSafe(row, col)) {
-                rows.add(row); diags.add(col + row); antiDiags.add(row - col);
-                backtrack(col+1);
-                rows.remove(row); diags.remove(col + row); antiDiags.remove(row - col);
+        for(int i = 0; i < n; i++) {
+
+            if(isSafe(i, col)) {
+                rows[i] = true; cols[col] = true; diags[i+col] = true; antiDiags[antiDiagonals.apply(i-col)] = true;
+                curr.get(i).setCharAt(col, 'Q');
+                back(col+1, curr);
+                rows[i] = false; cols[col] = false; diags[i+col] = false; antiDiags[antiDiagonals.apply(i-col)] = false;
+                curr.get(i).setCharAt(col, '.');
             }
         }
 
     }
 
-    public void solveNQueens(int n) {
-        board = new int[n][n];
+    public List<List<String>> solveNQueens(int n) {
+
+        rows = new boolean[n]; cols = new boolean[n]; diags = new boolean[2*n];  antiDiags = new boolean[2*n];
         this.n = n;
-        backtrack(0);
+
+        ArrayList<StringBuilder> curr = new ArrayList<>();
+        for(int i = 0; i < n ; i++) {
+            curr.add(new StringBuilder());
+            StringBuilder sb = curr.get(i);
+            for(int j = 0; j < n; j++) {
+                sb.append('.');
+            }
+        }
+
+        back(0, curr);
+        return res;
     }
 
     public static void main(String[] args) {
         NQueen abc = new NQueen();
-        abc.solveNQueens(6);
-        System.out.println(abc.ans);
+        System.out.println(abc.solveNQueens(4));
     }
 }
